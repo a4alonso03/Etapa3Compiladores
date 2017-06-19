@@ -10,7 +10,20 @@ import java.util.*;
 import java.io.PrintStream;
 
 //Prueba de que si esta haciendo algo
+class SymbolSingleton{
+    private static SymbolSingleton instance = null;
+    private SymbolTable symbolTable = null;
+    protected SymbolSingleton(){
+        symbolTable = new SymbolTable();
+    }
 
+    public static SymbolSingleton getIntance(){
+        if(instance == null){
+            instance = new SymbolSingleton();
+        }
+        return instance;
+    }
+}
 /** Defines simple phylum Program */
 abstract class Program extends TreeNode {
     protected Program(int lineNumber) {
