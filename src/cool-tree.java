@@ -23,6 +23,30 @@ class SymbolSingleton{
         }
         return instance;
     }
+
+    public void enterScope(){
+        symbolTable.enterScope();
+    }
+
+    public void exitScope(){
+        symbolTable.exitScope();
+    }
+
+    public void addId(AbstractSymbol id, Object info){
+        symbolTable.addId(id, info);
+    }
+
+    public Object lookup(AbstractSymbol sym){
+        return symbolTable.lookup(sym);
+    }
+
+    public Object probe(AbstractSymbol sym){
+        return symbolTable.probe(sym);
+    }
+
+    public String toString(){
+        return symbolTable.toString();
+    }
 }
 /** Defines simple phylum Program */
 abstract class Program extends TreeNode {
