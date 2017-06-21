@@ -160,7 +160,7 @@ class Features extends ListNode {
     public Features(int lineNumber) {
         super(lineNumber);
     }
-    /** Appends "Feature" element to this list */
+    /** Appends "Feature" element to    this list */
     public Features appendElement(TreeNode elem) {
         addElement(elem);
         return this;
