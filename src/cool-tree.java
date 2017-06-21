@@ -125,7 +125,7 @@ abstract class Program extends TreeNode {
     }
     public abstract void dump_with_types(PrintStream out, int n);
     public abstract void semant();
-    public abstract void semanticAnalysis();
+    public abstract void semanticAnalysis(class_c currentClass);
 }
 
 
@@ -135,7 +135,7 @@ abstract class Class_ extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis();
+    public abstract void semanticAnalysis(class_c currentClass);
 }
 
 
@@ -172,7 +172,7 @@ abstract class Feature extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis();
+    public abstract void semanticAnalysis(class_c currentClass);
 }
 
 
@@ -209,7 +209,7 @@ abstract class Formal extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis();
+    public abstract void semanticAnalysis(class_c currentClass);
 }
 
 
@@ -255,7 +255,7 @@ abstract class Expression extends TreeNode {
         else
         { out.println(Utilities.pad(n) + ": _no_type"); }
     }
-    public abstract void semanticAnalysis();
+    public abstract void semanticAnalysis(class_c currentClass);
 }
 
 
@@ -292,7 +292,7 @@ abstract class Case extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis();
+    public abstract void semanticAnalysis(class_c currentClass);
 }
 
 
@@ -426,7 +426,7 @@ class programc extends Program {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -486,7 +486,7 @@ class class_c extends Class_ {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -539,7 +539,7 @@ class method extends Feature {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -585,7 +585,7 @@ class attr extends Feature {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -626,7 +626,7 @@ class formalc extends Formal {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -672,7 +672,7 @@ class branch extends Case {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -714,7 +714,7 @@ class assign extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -770,7 +770,7 @@ class static_dispatch extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -821,7 +821,7 @@ class dispatch extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -868,7 +868,7 @@ class cond extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -910,7 +910,7 @@ class loop extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -954,7 +954,7 @@ class typcase extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -993,7 +993,7 @@ class block extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1045,7 +1045,7 @@ class let extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1087,7 +1087,7 @@ class plus extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1129,7 +1129,7 @@ class sub extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1171,7 +1171,7 @@ class mul extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1213,7 +1213,7 @@ class divide extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1250,7 +1250,7 @@ class neg extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1292,7 +1292,7 @@ class lt extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1334,7 +1334,7 @@ class eq extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1376,7 +1376,7 @@ class leq extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1413,7 +1413,7 @@ class comp extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1450,7 +1450,7 @@ class int_const extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1487,7 +1487,7 @@ class bool_const extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1526,7 +1526,7 @@ class string_const extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1563,7 +1563,7 @@ class new_ extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1600,7 +1600,7 @@ class isvoid extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1632,7 +1632,7 @@ class no_expr extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
@@ -1669,7 +1669,7 @@ class object extends Expression {
     }
 
     @Override
-    public void semanticAnalysis() {
+    public void semanticAnalysis(class_c currentClass) {
 
     }
 }
