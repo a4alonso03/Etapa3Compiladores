@@ -34,6 +34,10 @@ class ClassSingleton{
     public PrintStream semantError() {
         return classTable.semantError();
     }
+
+    public boolean errors(){
+        return classTable.errors();
+    }
 }
 
 class MethodSingleton{
@@ -324,7 +328,7 @@ class Cases extends ListNode {
  See <a href="TreeNode.html">TreeNode</a> for full documentation. */
 class programc extends Program {
     private Map< String,class_c > classMap;
-    private ClassTable classTable;
+    private ClassSingleton classTable;
 
     protected Classes classes;
     /** Creates "programc" AST node.
@@ -336,7 +340,7 @@ class programc extends Program {
         super(lineNumber);
         classMap = new HashMap<String,class_c>();
         classes = a1;
-        classTable = new ClassTable(classes);
+        classTable = new ClassSingleton(classes);
     }
     public TreeNode copy() {
         return new programc(lineNumber, (Classes)classes.copy());
