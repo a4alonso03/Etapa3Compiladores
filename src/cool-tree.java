@@ -9,17 +9,16 @@
 import java.util.*;
 import java.io.PrintStream;
 
-//Prueba de que si esta haciendo algo
-class SymbolSingleton{
-    private static SymbolSingleton instance = null;
+class MethodSingleton{
+    private static MethodSingleton instance = null;
     private SymbolTable symbolTable = null;
-    protected SymbolSingleton(){
+    protected MethodSingleton(){
         symbolTable = new SymbolTable();
     }
 
-    public static SymbolSingleton getIntance(){
+    public static MethodSingleton getIntance(){
         if(instance == null){
-            instance = new SymbolSingleton();
+            instance = new MethodSingleton();
         }
         return instance;
     }
@@ -48,6 +47,46 @@ class SymbolSingleton{
         return symbolTable.toString();
     }
 }
+
+class ObjectSingleton{
+    private static ObjectSingleton instance = null;
+    private SymbolTable symbolTable = null;
+    protected ObjectSingleton(){
+        symbolTable = new SymbolTable();
+    }
+
+    public static ObjectSingleton getIntance(){
+        if(instance == null){
+            instance = new ObjectSingleton();
+        }
+        return instance;
+    }
+
+    public void enterScope(){
+        symbolTable.enterScope();
+    }
+
+    public void exitScope(){
+        symbolTable.exitScope();
+    }
+
+    public void addId(AbstractSymbol id, Object info){
+        symbolTable.addId(id, info);
+    }
+
+    public Object lookup(AbstractSymbol sym){
+        return symbolTable.lookup(sym);
+    }
+
+    public Object probe(AbstractSymbol sym){
+        return symbolTable.probe(sym);
+    }
+
+    public String toString(){
+        return symbolTable.toString();
+    }
+}
+
 /** Defines simple phylum Program */
 abstract class Program extends TreeNode {
     protected Program(int lineNumber) {
