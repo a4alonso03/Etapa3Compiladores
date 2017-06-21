@@ -6,18 +6,56 @@
 //
 //////////////////////////////////////////////////////////
 
+import sun.reflect.generics.tree.Tree;
+
 import java.util.*;
 import java.io.PrintStream;
+
+
+class ClassSingleton{
+    private static ClassSingleton instance = null;
+    private ClassTable classTable = null;
+
+    protected ClassSingleton(Classes classes){
+        classTable = new ClassTable(classes);
+    }
+
+    public static ClassSingleton getInstance(Classes classes){
+        if(instance == null){
+            instance = new ClassSingleton(classes);
+        }
+        return instance;
+    }
+
+    public PrintStream semantError(class_c c){
+        return classTable.semantError(c);
+    }
+
+    public PrintStream semantError(AbstractSymbol filename, TreeNode t){
+        return classTable.semantError(filename, t);
+    }
+
+    public PrintStream semantError(){
+        return classTable.semantError();
+    }
+
+    public boolean errors(){
+        return classTable.errors();
+    }
+
+}
 
 //Prueba de que si esta haciendo algo
 class SymbolSingleton{
     private static SymbolSingleton instance = null;
     private SymbolTable symbolTable = null;
+
+
     protected SymbolSingleton(){
         symbolTable = new SymbolTable();
     }
 
-    public static SymbolSingleton getIntance(){
+    public static SymbolSingleton getInstance(){
         if(instance == null){
             instance = new SymbolSingleton();
         }
@@ -1412,6 +1450,7 @@ class bool_const extends Expression {
     public void dump_with_types(PrintStream out, int n) {
         dump_line(out, n);
         out.println(Utilities.pad(n) + "_bool");
+
         dump_Boolean(out, n + 2, val);
         dump_type(out, n);
     }
