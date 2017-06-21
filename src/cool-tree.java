@@ -9,6 +9,33 @@
 import java.util.*;
 import java.io.PrintStream;
 
+class ClassSingleton{
+    private static ClassSingleton instance = null;
+    private ClassTable classTable = null;
+    protected ClassSingleton(Classes classes){
+        classTable = new ClassTable(classes);
+    }
+
+    public static ClassSingleton getIntance(Classes classes){
+        if(instance == null){
+            instance = new ClassSingleton(classes);
+        }
+        return instance;
+    }
+
+    public PrintStream semantError(class_c c){
+        return classTable.semantError(c);
+    }
+
+    public PrintStream semantError(AbstractSymbol filename, TreeNode t) {
+        return classTable.semantError(filename,t);
+    }
+
+    public PrintStream semantError() {
+        return classTable.semantError();
+    }
+}
+
 class MethodSingleton{
     private static MethodSingleton instance = null;
     private SymbolTable symbolTable = null;
