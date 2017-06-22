@@ -125,7 +125,7 @@ abstract class Program extends TreeNode {
     }
     public abstract void dump_with_types(PrintStream out, int n);
     public abstract void semant();
-    public abstract void semanticAnalysis(class_c currentClass);
+    public abstract AbstractSymbol semanticAnalysis(class_c currentClass);
 }
 
 
@@ -135,7 +135,7 @@ abstract class Class_ extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis(class_c currentClass);
+    public abstract AbstractSymbol semanticAnalysis(class_c currentClass);
 }
 
 
@@ -172,7 +172,7 @@ abstract class Feature extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis(class_c currentClass);
+    public abstract AbstractSymbol semanticAnalysis(class_c currentClass);
 }
 
 
@@ -209,7 +209,7 @@ abstract class Formal extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis(class_c currentClass);
+    public abstract AbstractSymbol semanticAnalysis(class_c currentClass);
 }
 
 
@@ -255,7 +255,7 @@ abstract class Expression extends TreeNode {
         else
         { out.println(Utilities.pad(n) + ": _no_type"); }
     }
-    public abstract void semanticAnalysis(class_c currentClass);
+    public abstract AbstractSymbol semanticAnalysis(class_c currentClass);
 }
 
 
@@ -292,7 +292,7 @@ abstract class Case extends TreeNode {
         super(lineNumber);
     }
     public abstract void dump_with_types(PrintStream out, int n);
-    public abstract void semanticAnalysis(class_c currentClass);
+    public abstract AbstractSymbol semanticAnalysis(class_c currentClass);
 }
 
 
@@ -426,8 +426,8 @@ class programc extends Program {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -486,8 +486,8 @@ class class_c extends Class_ {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -539,8 +539,8 @@ class method extends Feature {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -585,8 +585,8 @@ class attr extends Feature {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -626,8 +626,8 @@ class formalc extends Formal {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -672,8 +672,8 @@ class branch extends Case {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -714,8 +714,8 @@ class assign extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -770,8 +770,8 @@ class static_dispatch extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -821,8 +821,8 @@ class dispatch extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -868,8 +868,8 @@ class cond extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -910,8 +910,8 @@ class loop extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -954,8 +954,8 @@ class typcase extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -993,8 +993,8 @@ class block extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1045,8 +1045,8 @@ class let extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1087,8 +1087,8 @@ class plus extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1129,8 +1129,8 @@ class sub extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1171,8 +1171,8 @@ class mul extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1213,8 +1213,8 @@ class divide extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1250,8 +1250,8 @@ class neg extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1292,8 +1292,8 @@ class lt extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1334,8 +1334,8 @@ class eq extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1376,8 +1376,8 @@ class leq extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1413,8 +1413,8 @@ class comp extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1450,8 +1450,8 @@ class int_const extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1487,8 +1487,8 @@ class bool_const extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1526,8 +1526,8 @@ class string_const extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1563,8 +1563,8 @@ class new_ extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1600,8 +1600,8 @@ class isvoid extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1632,8 +1632,8 @@ class no_expr extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
@@ -1669,8 +1669,8 @@ class object extends Expression {
     }
 
     @Override
-    public void semanticAnalysis(class_c currentClass) {
-
+    public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        return null;
     }
 }
 
