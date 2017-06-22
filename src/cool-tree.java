@@ -1503,8 +1503,8 @@ class bool_const extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-
-        return null;
+        set_type(TreeConstants.Bool);
+        return get_type();
     }
 }
 
