@@ -23,6 +23,10 @@ class ClassSingleton{
         return instance;
     }
 
+    public static ClassSingleton getIntance(){
+        return instance;
+    }
+
     public PrintStream semantError(class_c c){
         return classTable.semantError(c);
     }
@@ -487,6 +491,9 @@ class class_c extends Class_ {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        for (Enumeration e = features.getElements(); e.hasMoreElements();) {
+            ((Feature)e.nextElement()).semanticAnalysis(this);
+        }
         return null;
     }
 }
@@ -715,6 +722,13 @@ class assign extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        expr.semanticAnalysis(currentClass);
+        AbstractSymbol abstractSymbol = (AbstractSymbol) ObjectSingleton.getIntance().lookup(name);
+
+        if(abstractSymbol == null){
+            ClassSingleton.getIntance().semantError();
+
+        }
         return null;
     }
 }
@@ -1451,7 +1465,8 @@ class int_const extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-        return null;
+        set_type(TreeConstants.Int);
+        return get_type();
     }
 }
 
@@ -1488,6 +1503,7 @@ class bool_const extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+
         return null;
     }
 }
