@@ -1543,7 +1543,8 @@ class string_const extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-        return null;
+        set_type(TreeConstants.Str);
+        return get_type();
     }
 }
 
