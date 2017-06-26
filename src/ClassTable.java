@@ -1,4 +1,6 @@
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /** This class may be used to contain the semantic information such as
  * the inheritance graph.  You may use it or not as you like: it is only
@@ -6,6 +8,8 @@ import java.io.PrintStream;
 class ClassTable {
     private int semantErrors;
     private PrintStream errorStream;
+    private Classes classes;
+    private Map<String,class_c> classMap;
 
     /** Creates data structures representing basic Cool classes (Object,
      * IO, Int, Bool, String).  Please note: as is this method does not
@@ -174,7 +178,7 @@ class ClassTable {
     public ClassTable(Classes cls) {
 	semantErrors = 0;
 	errorStream = System.err;
-	
+	classes = cls;
 	/* fill this in */
     }
 
@@ -218,10 +222,40 @@ class ClassTable {
 	return errorStream;
     }
 
-    /** Returns true if there are any static semantic errors. */
+	public void setClassMap(Map<String, class_c> classMap) {
+		this.classMap = classMap;
+	}
+
+	/** Returns true if there are any static semantic errors. */
     public boolean errors() {
 	return semantErrors != 0;
     }
+
+	/**
+	 * Checks if a class is a subClass of another class
+	 * @param c1 The supposed parent class
+	 * @param c2 The supposed child class
+	 * @return true if and only if c2 is a subclass of c1
+	 */
+	public boolean isSubClass(class_c c1, class_c c2){
+    	if(c2.getParent().getString().contentEquals("Object")){
+    		return false;
+		}
+		boolean isSubClass = false;
+		class_c parent = c1;
+		while (!isSubClass && !parent.getName().getString().contentEquals("Object")){
+			if(String.valueOf(c2.getParent())
+				.contentEquals(parent.getName().toString()))
+			{
+				isSubClass = true;
+			}
+			else
+			{
+				parent = classMap.get(parent.getParent().getString());
+			}
+		}
+		return isSubClass;
+	}
 }
 			  
     

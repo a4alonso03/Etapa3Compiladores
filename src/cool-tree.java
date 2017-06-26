@@ -42,6 +42,10 @@ class ClassSingleton{
     public boolean errors(){
         return classTable.errors();
     }
+
+    public void setClassMap(Map<String, class_c> classMap) {
+        classTable.setClassMap(classMap);
+    }
 }
 
 class MethodSingleton{
@@ -344,7 +348,7 @@ class programc extends Program {
         super(lineNumber);
         classMap = new HashMap<String,class_c>();
         classes = a1;
-        classTable = new ClassSingleton(classes);
+        classTable = ClassSingleton.getIntance(classes);
     }
     public TreeNode copy() {
         return new programc(lineNumber, (Classes)classes.copy());
@@ -373,6 +377,7 @@ class programc extends Program {
         }
         checkClassParentExists(out,n);
 
+        classTable.setClassMap(classMap);
         for (Map.Entry<String,class_c> entry : classMap.entrySet()){
             class_c class_ = entry.getValue();
             if(!String.valueOf(class_.getParent()).contentEquals("Object")){
@@ -547,6 +552,10 @@ class method extends Feature {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        for (Enumeration e = formals.getElements(); e.hasMoreElements();) {
+            ((Formal)e.nextElement()).semanticAnalysis(currentClass);
+        }
+        expr.semanticAnalysis(currentClass);
         return null;
     }
 }
@@ -593,6 +602,8 @@ class attr extends Feature {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        AbstractSymbol abstractSymbolInit = init.semanticAnalysis(currentClass);
+        if(true){}
         return null;
     }
 }
@@ -1008,6 +1019,9 @@ class block extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        for (Enumeration e = body.getElements(); e.hasMoreElements();) {
+            ((Expression)e.nextElement()).semanticAnalysis(currentClass);
+        }
         return null;
     }
 }
