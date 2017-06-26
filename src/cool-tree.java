@@ -16,14 +16,14 @@ class ClassSingleton{
         classTable = new ClassTable(classes);
     }
 
-    public static ClassSingleton getIntance(Classes classes){
+    public static ClassSingleton getInstance(Classes classes){
         if(instance == null){
             instance = new ClassSingleton(classes);
         }
         return instance;
     }
 
-    public static ClassSingleton getIntance(){
+    public static ClassSingleton getInstance(){
         return instance;
     }
 
@@ -51,7 +51,7 @@ class MethodSingleton{
         symbolTable = new SymbolTable();
     }
 
-    public static MethodSingleton getIntance(){
+    public static MethodSingleton getInstance(){
         if(instance == null){
             instance = new MethodSingleton();
         }
@@ -90,7 +90,7 @@ class ObjectSingleton{
         symbolTable = new SymbolTable();
     }
 
-    public static ObjectSingleton getIntance(){
+    public static ObjectSingleton getInstance(){
         if(instance == null){
             instance = new ObjectSingleton();
         }
@@ -722,14 +722,11 @@ class assign extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-        expr.semanticAnalysis(currentClass);
-        AbstractSymbol abstractSymbol = (AbstractSymbol) ObjectSingleton.getIntance().lookup(name);
-
-        if(abstractSymbol == null){
-            ClassSingleton.getIntance().semantError();
+        AbstractSymbol variableType = expr.semanticAnalysis(currentClass);
+        if(true     /*ClassSingleton.getInstance().isSubClass(currentClass,variableType)*/){
 
         }
-        return null;
+        return expr.semanticAnalysis(currentClass);
     }
 }
 
