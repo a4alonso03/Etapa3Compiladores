@@ -46,6 +46,10 @@ class ClassSingleton{
     public void setClassMap(Map<String, class_c> classMap) {
         classTable.setClassMap(classMap);
     }
+
+    public boolean isSubClass(String c1, String c2){
+        return classTable.isSubClass(c1,c2);
+    }
 }
 
 class MethodSingleton{
@@ -348,7 +352,7 @@ class programc extends Program {
         super(lineNumber);
         classMap = new HashMap<String,class_c>();
         classes = a1;
-        classTable = ClassSingleton.getIntance(classes);
+        classTable = ClassSingleton.getInstance(classes);
     }
     public TreeNode copy() {
         return new programc(lineNumber, (Classes)classes.copy());
@@ -603,7 +607,12 @@ class attr extends Feature {
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
         AbstractSymbol abstractSymbolInit = init.semanticAnalysis(currentClass);
-        if(true){}
+        if(ClassSingleton.getInstance().isSubClass(currentClass.toString(), abstractSymbolInit.getString())){
+            return type_decl;
+        }
+        else{
+            ClassSingleton.getInstance().semantError(abstractSymbolInit, this);
+        }
         return null;
     }
 }

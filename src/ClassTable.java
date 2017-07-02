@@ -237,25 +237,25 @@ class ClassTable {
 	 * @param c2 The supposed child class
 	 * @return true if and only if c2 is a subclass of c1
 	 */
-	public boolean isSubClass(class_c c1, class_c c2){
-    	if(c2.getParent().getString().contentEquals("Object")){
-    		return false;
-		}
-		boolean isSubClass = false;
-		class_c parent = c1;
-		while (!isSubClass && !parent.getName().getString().contentEquals("Object")){
-			if(String.valueOf(c2.getParent())
-				.contentEquals(parent.getName().toString()))
+	public boolean isSubClass(String c1, String c2){
+    	class_c class1 = classMap.get(c1);
+    	class_c class2 = classMap.get(c2);
+	    if(c1.contentEquals(c2)){
+	        return true;
+        }
+	    boolean isSubClass = false;
+		String parent = class2.getParent().toString();
+		while (!isSubClass && !parent.contentEquals("Object")){
+			if(String.valueOf(class1.getName())
+				.contentEquals(parent))
 			{
 				isSubClass = true;
 			}
 			else
 			{
-				parent = classMap.get(parent.getParent().getString());
+				parent = classMap.get(parent).getParent().toString();
 			}
 		}
 		return isSubClass;
 	}
 }
-			  
-    
