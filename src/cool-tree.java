@@ -6,6 +6,9 @@
 //
 //////////////////////////////////////////////////////////
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+import sun.reflect.generics.tree.Tree;
+
 import java.util.*;
 import java.io.PrintStream;
 
@@ -369,7 +372,8 @@ class programc extends Program {
         for (Enumeration e = classes.getElements(); e.hasMoreElements(); ) {
             // sm: changed 'n + 1' to 'n + 2' to match changes elsewhere
             class_c class_ = (class_c) e.nextElement();
-            class_.dump_with_types(out, n + 2);
+            class_.semanticAnalysis(class_);
+            //class_.dump_with_types(out, n + 2);
             if(this.classMap.containsKey(String.valueOf(class_.getName()))){
                 out.print("No compila para clase repetida\n");
                 classTable.semantError();
@@ -500,9 +504,13 @@ class class_c extends Class_ {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        ObjectSingleton.getInstance().enterScope();
+        MethodSingleton.getInstance().enterScope();
         for (Enumeration e = features.getElements(); e.hasMoreElements();) {
             ((Feature)e.nextElement()).semanticAnalysis(this);
         }
+        ObjectSingleton.getInstance().exitScope();
+        MethodSingleton.getInstance().exitScope();
         return null;
     }
 }
@@ -556,10 +564,17 @@ class method extends Feature {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        ObjectSingleton.getInstance().enterScope();
         for (Enumeration e = formals.getElements(); e.hasMoreElements();) {
-            ((Formal)e.nextElement()).semanticAnalysis(currentClass);
+            Formal formal = (Formal) e.nextElement();
+            System.out.println("esto es un parametro: " + ((formalc)formal).name.toString());
+            ObjectSingleton.getInstance().addId(
+                    ((formalc)formal).name,
+                    formal.semanticAnalysis(currentClass));
+
         }
         expr.semanticAnalysis(currentClass);
+        ObjectSingleton.getInstance().exitScope();
         return null;
     }
 }
@@ -607,10 +622,21 @@ class attr extends Feature {
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
         AbstractSymbol abstractSymbolInit = init.semanticAnalysis(currentClass);
-        if(ClassSingleton.getInstance().isSubClass(currentClass.toString(), abstractSymbolInit.getString())){
+        if(abstractSymbolInit == null){
+            ObjectSingleton.getInstance().addId(name, type_decl);
+            System.out.println("Esta es la clase: " + type_decl);
+            return type_decl;
+        }
+
+        if(type_decl.equals(abstractSymbolInit)){
+        //if(ClassSingleton.getInstance().isSubClass(type_decl.getString(),abstractSymbolInit.getString())){
+            System.out.println("clases compatibles: " + type_decl + " con " + init);
+            ObjectSingleton.getInstance().addId(name, type_decl);
+
             return type_decl;
         }
         else{
+            System.out.println("clases no compatibles");
             ClassSingleton.getInstance().semantError(abstractSymbolInit, this);
         }
         return null;
@@ -654,7 +680,7 @@ class formalc extends Formal {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-        return null;
+        return type_decl;
     }
 }
 
@@ -900,6 +926,20 @@ class cond extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        System.out.println("Este es el predicado del if "+ pred.get_type());
+
+        AbstractSymbol predAbstract = pred.semanticAnalysis(currentClass);
+        if(ObjectSingleton.getInstance().lookup(predAbstract) == null){
+
+        }
+        else{
+            if(!pred.get_type().equals(TreeConstants.Bool)){
+                System.out.println("hay algo en el if que NO es un bool");
+            }
+            else {
+                System.out.println("hay algo en el if que SI es un bool");
+            }
+        }
         return null;
     }
 }
@@ -1122,6 +1162,16 @@ class plus extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        AbstractSymbol e1Abstract = e1.semanticAnalysis(currentClass);
+        AbstractSymbol e2Abstract = e2.semanticAnalysis(currentClass);
+        if(e1Abstract.equals(TreeConstants.Int) && e2Abstract.equals(TreeConstants.Int)) {
+            System.out.println("aqui hay una suma si valida");
+            return TreeConstants.Int;
+        }
+        else {
+            System.out.println("aqui hay una suma no valida");
+            ClassSingleton.getInstance().semantError(e1Abstract, this);
+        }
         return null;
     }
 }
@@ -1164,6 +1214,15 @@ class sub extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        AbstractSymbol e1Abstract = e1.semanticAnalysis(currentClass);
+        AbstractSymbol e2Abstract = e2.semanticAnalysis(currentClass);
+        if(e1Abstract.equals(TreeConstants.Int)
+                && e2Abstract.equals(TreeConstants.Int)) {
+            return TreeConstants.Int;
+        }
+        else {
+            ClassSingleton.getInstance().semantError(e1Abstract, this);
+        }
         return null;
     }
 }
@@ -1206,6 +1265,15 @@ class mul extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        AbstractSymbol e1Abstract = e1.semanticAnalysis(currentClass);
+        AbstractSymbol e2Abstract = e2.semanticAnalysis(currentClass);
+        if(e1Abstract.equals(TreeConstants.Int)
+                && e2Abstract.equals(TreeConstants.Int)) {
+            return TreeConstants.Int;
+        }
+        else {
+            ClassSingleton.getInstance().semantError(e1Abstract, this);
+        }
         return null;
     }
 }
@@ -1248,6 +1316,15 @@ class divide extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        AbstractSymbol e1Abstract = e1.semanticAnalysis(currentClass);
+        AbstractSymbol e2Abstract = e2.semanticAnalysis(currentClass);
+        if(e1Abstract.equals(TreeConstants.Int)
+                && e2Abstract.equals(TreeConstants.Int)) {
+            return TreeConstants.Int;
+        }
+        else {
+            ClassSingleton.getInstance().semantError(e1Abstract, this);
+        }
         return null;
     }
 }
@@ -1707,7 +1784,11 @@ class object extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-        return null;
+        //ObjectSingleton.getInstance().lookup(name);
+        set_type((AbstractSymbol) ObjectSingleton.getInstance().lookup(name));
+        System.out.println("este es el tipo de " + name.toString() +
+                ": " + ObjectSingleton.getInstance().lookup(name).toString());
+        return get_type();
     }
 }
 
