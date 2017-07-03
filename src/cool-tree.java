@@ -373,7 +373,9 @@ class programc extends Program {
             // sm: changed 'n + 1' to 'n + 2' to match changes elsewhere
             class_c class_ = (class_c) e.nextElement();
             class_.semanticAnalysis(class_);
+            /************************************/
             //class_.dump_with_types(out, n + 2);
+            /************************************/
             if(this.classMap.containsKey(String.valueOf(class_.getName()))){
                 out.print("No compila para clase repetida\n");
                 classTable.semantError();
@@ -384,6 +386,7 @@ class programc extends Program {
             }
         }
         checkClassParentExists(out,n);
+        checkMainClassExists(out);
 
         classTable.setClassMap(classMap);
         for (Map.Entry<String,class_c> entry : classMap.entrySet()){
@@ -411,6 +414,14 @@ class programc extends Program {
                 classTable.semantError();
                 System.exit(1);
             }
+        }
+    }
+
+    public void checkMainClassExists(PrintStream out){
+        if(!classMap.containsKey("Main")){
+            out.print("No existe clase Main\n");
+            classTable.semantError();
+            System.exit(1);
         }
     }
 
@@ -457,6 +468,9 @@ class class_c extends Class_ {
     protected AbstractSymbol parent;
     protected Features features;
     protected AbstractSymbol filename;
+
+    public boolean tieneMain = true;
+
     /** Creates "class_c" AST node.
      *
      * @param lineNumber the line in the source file from which this node came.
@@ -504,10 +518,25 @@ class class_c extends Class_ {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        boolean esMain = getName().getString().contentEquals("Main");
         ObjectSingleton.getInstance().enterScope();
         MethodSingleton.getInstance().enterScope();
-        for (Enumeration e = features.getElements(); e.hasMoreElements();) {
-            ((Feature)e.nextElement()).semanticAnalysis(this);
+        if(esMain){
+            tieneMain = false;
+            for (Enumeration e = features.getElements(); e.hasMoreElements();) {
+                Feature feature = (Feature) e.nextElement();
+                feature.semanticAnalysis(this);
+            }
+            if(!tieneMain){
+                System.out.print("No existe metodo main en la clase main\n");
+                ClassSingleton.getInstance().semantError();
+                System.exit(1);
+            }
+        }
+        else{
+            for (Enumeration e = features.getElements(); e.hasMoreElements();) {
+                ((Feature)e.nextElement()).semanticAnalysis(this);
+            }
         }
         ObjectSingleton.getInstance().exitScope();
         MethodSingleton.getInstance().exitScope();
@@ -564,8 +593,14 @@ class method extends Feature {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+        if(!currentClass.tieneMain){
+            if(name.toString().contentEquals("main")){
+                currentClass.tieneMain = true;
+            }
+        }
         ObjectSingleton.getInstance().enterScope();
         for (Enumeration e = formals.getElements(); e.hasMoreElements();) {
+
             Formal formal = (Formal) e.nextElement();
             System.out.println("esto es un parametro: " + ((formalc)formal).name.toString());
             ObjectSingleton.getInstance().addId(
@@ -768,11 +803,20 @@ class assign extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-        AbstractSymbol variableType = expr.semanticAnalysis(currentClass);
-        if(true     /*ClassSingleton.getInstance().isSubClass(currentClass,variableType)*/){
+        AbstractSymbol abstractExpr = expr.semanticAnalysis(currentClass);
+        set_type((AbstractSymbol) ObjectSingleton.getInstance().lookup(name));
 
+        if(get_type().equals(abstractExpr)){
+            //if(ClassSingleton.getInstance().isSubClass(type_decl.getString(),abstractSymbolInit.getString())){
+            System.out.println("clases compatibles: " + get_type() + " con " + expr);
+            ObjectSingleton.getInstance().addId(name, get_type());
+            return get_type();
         }
-        return expr.semanticAnalysis(currentClass);
+        else{
+            System.out.println("clases no compatibles");
+            ClassSingleton.getInstance().semantError(abstractExpr, this);
+        }
+        return null;
     }
 }
 
@@ -926,6 +970,8 @@ class cond extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
+
+        //revisar si lo que esta revisando en el if es un bool
         AbstractSymbol predAbstract = pred.semanticAnalysis(currentClass);
         pred.set_type(predAbstract);
         System.out.println("Este es el predicado del if "+ pred.get_type());
@@ -936,6 +982,16 @@ class cond extends Expression {
             System.out.println("hay algo en el if que NO es un bool");
             ClassSingleton.getInstance().semantError(predAbstract,this);
         }
+
+        //revisar el then y el else
+        ObjectSingleton.getInstance().enterScope();
+        then_exp.semanticAnalysis(currentClass);
+        ObjectSingleton.getInstance().exitScope();
+
+        ObjectSingleton.getInstance().enterScope();
+        else_exp.semanticAnalysis(currentClass);
+        ObjectSingleton.getInstance().exitScope();
+
         return null;
     }
 }
@@ -1781,6 +1837,10 @@ class object extends Expression {
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
         //ObjectSingleton.getInstance().lookup(name);
+        if(name.equals("self")){
+            set_type((AbstractSymbol) ObjectSingleton.getInstance().lookup(name));
+        }
+
         set_type((AbstractSymbol) ObjectSingleton.getInstance().lookup(name));
         System.out.println("este es el tipo de " + name.toString() +
                 ": " + ObjectSingleton.getInstance().lookup(name).toString());
