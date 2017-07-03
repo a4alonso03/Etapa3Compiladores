@@ -926,19 +926,15 @@ class cond extends Expression {
 
     @Override
     public AbstractSymbol semanticAnalysis(class_c currentClass) {
-        System.out.println("Este es el predicado del if "+ pred.get_type());
-
         AbstractSymbol predAbstract = pred.semanticAnalysis(currentClass);
-        if(ObjectSingleton.getInstance().lookup(predAbstract) == null){
-
+        pred.set_type(predAbstract);
+        System.out.println("Este es el predicado del if "+ pred.get_type());
+        if(pred.get_type().equals(TreeConstants.Bool)){
+            System.out.println("hay algo en el if que SI es un bool");
         }
         else{
-            if(!pred.get_type().equals(TreeConstants.Bool)){
-                System.out.println("hay algo en el if que NO es un bool");
-            }
-            else {
-                System.out.println("hay algo en el if que SI es un bool");
-            }
+            System.out.println("hay algo en el if que NO es un bool");
+            ClassSingleton.getInstance().semantError(predAbstract,this);
         }
         return null;
     }
